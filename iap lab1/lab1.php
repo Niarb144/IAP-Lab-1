@@ -8,6 +8,7 @@ if (isset($_POST['btn-save'])){
 	$city = $_POST['city_name'];
 
 	$user = new User($first_name, $last_name, $city);
+	$uploader = new FileUploader;
 	if (!$user -> validateForm()){
 		$user -> createFormErrorSessions ();
 		header ("Refresh:0");
@@ -15,7 +16,9 @@ if (isset($_POST['btn-save'])){
 	}
 	$sql = $user ->save();
 
-	if($sql){
+	$file_upload_response = $uploader -> uploadFile();
+
+	if($res && $file_upload_response){
 		echo "Save operation was successful";
 	}else{
 		echo "An error ocurred!";
@@ -61,6 +64,9 @@ if (isset($_POST['btn-save'])){
 				<td><input type = "password" name = "password" placeholder = "Password"/></td>
 			</tr>
 			<tr>
+				<td>Profile image: <input type = "file" name = "fileToUpload" id = "fileToUpload"></td>
+			</tr>
+			<tr>
 				<td><button type = "submit" name = "btn-save"><strong> SAVE</strong></button></td>
 			</tr>
 			<tr>
@@ -70,3 +76,4 @@ if (isset($_POST['btn-save'])){
 	</form>
 </body>
 </html>
+
